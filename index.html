@@ -569,8 +569,8 @@ footer{padding:2rem;border-top:1px solid var(--faint);display:flex;justify-conte
     <div class="gate-icon">
       <svg viewBox="0 0 24 24"><path d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
     </div>
-    <h2>Your PQ results<br>are <em>ready.</em></h2>
-    <p class="gate-sub">Enter your details below. I'll send your full Participation Quotient™ report — your score, engine breakdown, bottleneck, and three prioritized actions for your specific situation.</p>
+    <h2 id="gate-headline">Your PQ results<br>are <em>ready.</em></h2>
+    <p class="gate-sub">That number is only half the story. Enter your details below for the full report — your engine-by-engine breakdown, your Resonance Index (whether that participation is earned or manufactured), the one bottleneck limiting everything else, and three moves that would change it.</p>
     <div class="gate-form">
       <div class="f-row">
         <div class="f-field"><label>First name</label><input id="g-first" type="text" placeholder="Jane"></div>
@@ -984,7 +984,7 @@ function selectOpt(el, optIdx){
 function nextQ(){
   if(state.answers[state.currentQ]===null) return;
   if(state.currentQ < 14){ state.currentQ++; renderQ(); }
-  else { show('gate'); }
+  else { renderGateTeaser(); show('gate'); }
 }
 function prevQ(){
   if(state.currentQ > 0){ state.currentQ--; renderQ(); }
@@ -1064,6 +1064,19 @@ function getBottleneck(engScores){
   let min=Infinity, minIdx=0;
   engScores.forEach((e,i)=>{ if(e.pct<min){min=e.pct;minIdx=i;} });
   return ENGINES[minIdx].id;
+}
+
+// Runs the moment someone finishes question 15 — before the form. Shows the
+// real PQ score and archetype right on the gate screen itself, so the form
+// feels like unlocking the rest of the story rather than a blind ask.
+function renderGateTeaser(){
+  const {pq, eng} = calcScores();
+  const archetype = ARCHETYPES.find(a=>pq>=a.min&&pq<=a.max) || ARCHETYPES[ARCHETYPES.length-1];
+  const scoreColor = pq>=70?'#5db88a':pq>=40?'#e8a84a':'#e07060';
+  const headEl = document.getElementById('gate-headline');
+  if(headEl){
+    headEl.innerHTML = `Your PQ Score is <em style="color:${scoreColor}">${pq}</em><br>— ${archetype.name}.`;
+  }
 }
 
 function getStrongest(engScores){
