@@ -296,7 +296,17 @@ footer{padding:2rem;border-top:1px solid var(--faint);display:flex;justify-conte
 .cred-text strong{color:rgba(244,239,230,.65);font-weight:400}
 
 /* Consulting CTA */
-.consult-card{background:var(--ink-2);border:1px solid var(--gold-bdr);border-radius:var(--r);padding:2rem;margin-bottom:1.25rem;text-align:center}
+.consult-card{background:linear-gradient(160deg,var(--ink-2),rgba(200,164,74,.07));border:1.5px solid var(--gold);border-radius:var(--r);padding:2.5rem 2rem;margin-bottom:1.25rem;text-align:center;box-shadow:0 0 40px rgba(200,164,74,.12)}
+.consult-card h3{font-size:1.7rem}
+.consult-card #r-cta-btn{padding:1.1rem 3rem;font-size:.9rem}
+.early-cta{margin-top:20px;padding-top:18px;border-top:1px solid var(--gold-bdr);display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.early-cta-text{font-size:.85rem;color:var(--muted);flex:1;min-width:200px}
+.early-cta-btn{white-space:nowrap}
+.sticky-cta{position:fixed;bottom:0;left:0;right:0;z-index:50;background:var(--ink);border-top:1px solid var(--gold-bdr);padding:.9rem 1.5rem;display:none;align-items:center;justify-content:center;gap:1.25rem;box-shadow:0 -8px 24px rgba(0,0,0,.4)}
+.sticky-cta.active{display:flex}
+.sticky-cta-text{font-size:.82rem;color:var(--cream)}
+.sticky-cta-btn{padding:.65rem 1.5rem;font-size:.72rem}
+@media (max-width:640px){.sticky-cta-text{display:none}.sticky-cta{padding:.75rem}}
 .consult-scarcity{display:inline-block;font-size:.62rem;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);border:1px solid var(--gold-bdr);padding:.28rem .85rem;border-radius:1px;margin-bottom:1rem}
 .consult-card h3{font-family:var(--serif);font-size:1.4rem;font-weight:400;color:var(--cream);margin-bottom:.6rem;line-height:1.3}
 .consult-card p{font-size:.875rem;color:var(--muted);max-width:480px;margin:0 auto 1.4rem;line-height:1.78}
@@ -630,6 +640,7 @@ footer{padding:2rem;border-top:1px solid var(--faint);display:flex;justify-conte
       </div>
       <p class="body-para muted" id="r-resonance-note" style="margin-top:8px;font-size:.9rem;"></p>
       <p class="body-para" id="r-tension-line" style="margin-top:16px;"></p>
+      <div class="early-cta" id="r-early-cta"></div>
     </div>
 
     <div class="engines-card">
@@ -681,6 +692,12 @@ footer{padding:2rem;border-top:1px solid var(--faint);display:flex;justify-conte
   <div class="results-footer">
     <span class="footer-brand serif">Brian Selzer</span>
     <span class="footer-tag">Strategy · System · Story · Soul</span>
+  </div>
+
+  <!-- Persistent CTA bar — visible for the whole results screen, not just the bottom -->
+  <div class="sticky-cta" id="r-sticky-cta">
+    <span class="sticky-cta-text" id="r-sticky-text">Want to walk through your results together?</span>
+    <button class="btn-gold sticky-cta-btn" id="r-sticky-btn">Book a Call →</button>
   </div>
 </div>
 
@@ -924,6 +941,10 @@ function show(id) {
   const el = document.getElementById('screen-'+id);
   el.classList.add('active');
   window.scrollTo(0,0);
+  if(id !== 'results'){
+    const stickyBar = document.getElementById('r-sticky-cta');
+    if(stickyBar) stickyBar.classList.remove('active');
+  }
 }
 function showLanding(){ state={seg:'',answers:Array(15).fill(null),currentQ:0,lead:{}}; show('landing'); }
 function startAssessment(){ buildSeg(); show('seg'); }
@@ -1250,8 +1271,10 @@ function buildResults(){
     </div>
   `;
 
-  document.getElementById('r-cta-btn').onclick = ()=>{
-    // Send enriched score data to Formspree on booking intent
+  // Shared booking handler — every CTA on this page (early, bottom, sticky)
+  // fires the same tracked booking action, so we're not maintaining three
+  // copies of the same fetch call.
+  function bookCall(source){
     fetch('https://formspree.io/f/xaqzqqbn', {
       method: 'POST',
       headers: {'Content-Type':'application/json','Accept':'application/json'},
@@ -1262,13 +1285,38 @@ function buildResults(){
         role: state.lead.role,
         organization_type: state.seg,
         pq_score: pq,
+        resonance_score: resonance,
         stage: archetype.name,
         bottleneck: bnKey,
+        cta_source: source,
         _subject: `🔥 Booking Request — ${state.lead.first} ${state.lead.last} · ${state.lead.co} · PQ ${pq}`
       })
     }).catch(()=>{});
     window.open('https://calendly.com/brian-selzer/30min', '_blank');
-  };
+  }
+
+  document.getElementById('r-cta-btn').onclick = ()=> bookCall('bottom_card');
+
+  // Early CTA — sits right after the score/tension reveal, before the
+  // eight sections that follow it. Same booking action, lighter footprint.
+  const earlyEl = document.getElementById('r-early-cta');
+  if(earlyEl){
+    earlyEl.innerHTML = `
+      <span class="early-cta-text">${cta.header}</span>
+      <button class="btn-gold early-cta-btn" id="r-early-cta-btn">Talk It Through →</button>
+    `;
+    document.getElementById('r-early-cta-btn').onclick = ()=> bookCall('early_cta');
+  }
+
+  // Sticky bar — visible for the entire results screen, not just the bottom
+  const stickyBar = document.getElementById('r-sticky-cta');
+  const stickyText = document.getElementById('r-sticky-text');
+  const stickyBtn = document.getElementById('r-sticky-btn');
+  if(stickyBar){
+    stickyText.textContent = bnKey ? `Your bottleneck is ${ENGINES.find(e=>e.id===bnKey).name}. Let's map the fix.` : 'Want to walk through your results together?';
+    stickyBtn.onclick = ()=> bookCall('sticky_bar');
+    stickyBar.classList.add('active');
+  }
 
   // Animate bars
   setTimeout(()=>{
