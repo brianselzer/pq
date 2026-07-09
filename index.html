@@ -614,6 +614,22 @@ footer{padding:2rem;border-top:1px solid var(--faint);display:flex;justify-conte
       </div>
       <div class="archetype-name" id="r-archetype-name"></div>
       <div class="archetype-tag muted" id="r-archetype-tag"></div>
+      <p class="body-para muted" id="r-explain-line" style="margin-top:14px;"></p>
+    </div>
+
+    <!-- Resonance Index — plain, unpolished pilot version. Revisit copy after
+         watching real reactions; this is intentionally blunt, not a finished CTA. -->
+    <div class="engines-card" id="r-resonance-card">
+      <div class="engines-title">Resonance Index</div>
+      <div class="pq-display">
+        <div class="pq-big" id="r-resonance-num"></div>
+        <div class="pq-right">
+          <span>Same 15 answers, second read</span>
+          <span id="r-resonance-tier"></span>
+        </div>
+      </div>
+      <p class="body-para muted" id="r-resonance-note" style="margin-top:8px;font-size:.9rem;"></p>
+      <p class="body-para" id="r-tension-line" style="margin-top:16px;"></p>
     </div>
 
     <div class="engines-card">
@@ -693,99 +709,99 @@ const ENGINES = [
 
 const QUESTIONS = [
   // ORIENTATION ×3
-  { engine:0, text:'When someone becomes a customer, member, or follower for the first time — what happens next?', opts:[
-    {t:'We have a designed experience that gives them context, a clear role, and a reason to return.',s:3},
-    {t:'We have some welcome communications but they\'re generic — not designed around belonging.',s:2},
-    {t:'We point them to the product or content and mostly leave them to figure it out.',s:1},
-    {t:'We haven\'t designed this experience intentionally.',s:0}
+  { engine:0, text:'What happens the moment someone joins?', opts:[
+    {t:'We give them context, a role, and a clear reason to return.',s:3,r:3},
+    {t:'We optimize onboarding for speed and habit formation, without having deeply validated whether it reflects what they actually came for.',s:2,r:0},
+    {t:'We send some welcome messages, but nothing built around belonging yet.',s:1,r:1},
+    {t:'We point them at the product and let them figure it out.',s:0,r:1}
   ]},
-  { engine:0, text:'How clearly can your audience articulate — in their own words — what makes your community worth being part of?', opts:[
-    {t:'Very clearly. We hear it reflected back in how they describe us to others.',s:3},
-    {t:'Somewhat. Our most engaged members get it but the broader audience is fuzzier.',s:2},
-    {t:'Not clearly. We struggle to get consistent language from our audience about why they stay.',s:1},
-    {t:'We haven\'t tested this and honestly aren\'t sure.',s:0}
+  { engine:0, text:'How clearly can your audience explain, unprompted, why they stay?', opts:[
+    {t:'Clearly — we hear it echoed back in how they describe us.',s:3,r:3},
+    {t:'We\'ve built language into the experience that gets repeated back, though we haven\'t tested whether it\'s genuinely their own view.',s:2,r:0},
+    {t:'Only our most engaged members can really articulate it.',s:1,r:1},
+    {t:'We haven\'t tested this and don\'t actually know.',s:0,r:1}
   ]},
-  { engine:0, text:'How intentionally is the gap between someone\'s first and second interaction designed?', opts:[
-    {t:'Very intentionally — we have specific experiences designed to make the second interaction more valuable than the first.',s:3},
-    {t:'Somewhat — we have follow-up communications but nothing architecturally designed around return.',s:2},
-    {t:'Not much — we rely on the product or content to pull people back on its own.',s:1},
-    {t:'The gap isn\'t something we\'ve thought about as a design problem.',s:0}
+  { engine:0, text:'How intentional is the design of someone\'s second interaction with you?', opts:[
+    {t:'Very — the second interaction is built to matter more than the first.',s:3,r:3},
+    {t:'We use reminders and urgency to drive return visits, regardless of whether the first one delivered real value.',s:2,r:0},
+    {t:'We have some follow-up, but nothing structurally designed around return.',s:1,r:1},
+    {t:'We haven\'t treated this as a design problem.',s:0,r:1}
   ]},
   // CONTINUITY ×3
-  { engine:1, text:'At 30, 60, and 90 days after acquisition, how well do you understand what\'s happening to engagement — and why?', opts:[
-    {t:'We track this precisely and have defined intervention points at each stage.',s:3},
-    {t:'We can see the drop-off in aggregate but we\'re not systematically intervening.',s:2},
-    {t:'Our data is fragmented — we can\'t get a clean picture.',s:1},
-    {t:'We measure success primarily at acquisition and haven\'t built this view.',s:0}
+  { engine:1, text:'At 30/60/90 days, how well do you understand what\'s happening to engagement, and why?', opts:[
+    {t:'We track it precisely and act at defined points.',s:3,r:3},
+    {t:'We run win-back campaigns at lapsed users, without much visibility into why they actually left.',s:2,r:0},
+    {t:'We can see the drop-off, but we\'re not systematically acting on it.',s:1,r:1},
+    {t:'We really only measure success at acquisition.',s:0,r:1}
   ]},
-  { engine:1, text:'What\'s your primary mechanism for re-engaging someone who has gone quiet?', opts:[
-    {t:'A layered system — behavioral triggers, value reminders, community signals, personalized outreach.',s:3},
-    {t:'Promotional emails, discounts, or seasonal campaigns.',s:2},
-    {t:'We mostly rely on them to return on their own when they\'re ready.',s:1},
-    {t:'We don\'t have a systematic re-engagement approach.',s:0}
+  { engine:1, text:'What\'s your main way of re-engaging someone who\'s gone quiet?', opts:[
+    {t:'A layered system of signals and outreach, and we track whether it brings people back into real, lasting engagement — not just a single return visit.',s:3,r:3},
+    {t:'Discounts or limited-time offers, and we measure success by redemption or click-through, not what happens after.',s:2,r:0},
+    {t:'We mostly hope they come back on their own.',s:1,r:1},
+    {t:'We don\'t have a re-engagement approach.',s:0,r:1}
   ]},
-  { engine:1, text:'How would you characterize the balance between your acquisition investment and your retention investment?', opts:[
-    {t:'Roughly proportional — both have clear owners, budgets, and success metrics.',s:3},
-    {t:'Acquisition-heavy — retention gets attention when metrics drop but not proactive investment.',s:2},
-    {t:'Acquisition is almost the entire motion — retention is reactive at best.',s:1},
-    {t:'We measure success almost entirely at the acquisition stage.',s:0}
+  { engine:1, text:'How balanced is your investment between acquisition and retention?', opts:[
+    {t:'Roughly even — both have owners, budgets, and real metrics.',s:3,r:3},
+    {t:'We invest in retention tactics built to move short-term reactivation numbers rather than deepen the relationship.',s:2,r:0},
+    {t:'Acquisition-heavy — retention gets attention only when metrics drop.',s:1,r:1},
+    {t:'Nearly all our investment is acquisition.',s:0,r:1}
   ]},
   // PARTICIPATION ×3
-  { engine:2, text:'What percentage of your audience actively does something — contributes, creates, shares, refers, or advocates — versus passively consuming?', opts:[
-    {t:'A meaningful and growing share. We\'ve designed experiences specifically to increase this ratio.',s:3},
-    {t:'A small but active segment. It happens but not by design.',s:2},
-    {t:'Almost entirely passive. The vast majority consume and leave.',s:1},
-    {t:'We don\'t differentiate between passive and active in how we measure or design.',s:0}
+  { engine:2, text:'What share of your audience actively contributes, versus passively consumes?', opts:[
+    {t:'A real, growing share — we\'ve designed for this ratio deliberately.',s:3,r:3},
+    {t:'A large share, driven by streaks, badges, and milestone mechanics that keep activity high.',s:2,r:0},
+    {t:'A small, active segment, but it isn\'t by design.',s:1,r:1},
+    {t:'We don\'t distinguish active from passive at all.',s:0,r:1}
   ]},
-  { engine:2, text:'How would you describe the role your audience plays in your organization\'s outcomes?', opts:[
-    {t:'Co-creators — they contribute to the experience, the culture, and the growth of the community.',s:3},
-    {t:'Participants — they engage meaningfully but within experiences we fully design and control.',s:2},
-    {t:'Consumers — they receive value but don\'t generate it.',s:1},
-    {t:'Spectators — they watch more than they engage.',s:0}
+  { engine:2, text:'What role does your audience actually play in your outcomes?', opts:[
+    {t:'Co-creators — they help shape the experience and the culture.',s:3,r:3},
+    {t:'We\'ve built structured tasks and challenges that generate visible activity and content for us.',s:2,r:0},
+    {t:'Participants — engaged, but entirely inside what we design and control.',s:1,r:1},
+    {t:'Spectators — mostly watching, rarely doing anything.',s:0,r:1}
   ]},
-  { engine:2, text:'What does your organization give people for showing up more, contributing more, or bringing others in?', opts:[
-    {t:'Meaningful recognition and status — people are seen, celebrated, and given visible roles that reflect their contribution. Reputation is the real currency.',s:3},
-    {t:'Standard loyalty mechanics — points, tiers, discounts — that exist but don\'t drive meaningful behavior change or create visible status.',s:2},
-    {t:'Occasional acknowledgment, but nothing structural. Participation isn\'t systematically recognized or rewarded.',s:1},
-    {t:'Nothing intentional. The experience is the same regardless of how much someone contributes.',s:0}
+  { engine:2, text:'What do people get for contributing more, or bringing others in?', opts:[
+    {t:'Real recognition and status — and we can point to it actually deepening people\'s involvement over time.',s:3,r:3},
+    {t:'A points or rewards system, and our main measure of its success is how much activity it drives, not what happens to people afterward.',s:2,r:0},
+    {t:'Occasional acknowledgment, but nothing structural.',s:1,r:1},
+    {t:'Nothing changes, regardless of how much someone contributes.',s:0,r:1}
   ]},
   // TRUST ×3
-  { engine:3, text:'When something goes wrong — a product failure, a bad experience, a public crisis — how does your organization respond?', opts:[
-    {t:'We have a defined approach: fast, transparent, accountable communication and a genuine recovery effort.',s:3},
-    {t:'We respond, but the process is improvised and inconsistent.',s:2},
-    {t:'We tend to minimize, delay, or go quiet and hope it passes.',s:1},
-    {t:'We haven\'t faced this at scale and don\'t have a defined approach.',s:0}
+  { engine:3, text:'When something goes wrong publicly, how does your org typically respond?', opts:[
+    {t:'Fast, transparent, accountable — with a genuine recovery effort.',s:3,r:3},
+    {t:'A coordinated response focused on managing the narrative and protecting the brand.',s:2,r:0},
+    {t:'We respond, but it\'s improvised and inconsistent.',s:1,r:1},
+    {t:'We tend to go quiet and hope it passes.',s:0,r:1}
   ]},
-  { engine:3, text:'How would your most loyal community members behave if your brand was publicly criticized?', opts:[
-    {t:'They\'d defend you — correct misinformation, add context, advocate publicly without being asked.',s:3},
-    {t:'They\'d probably stay loyal privately but wouldn\'t go out of their way to respond publicly.',s:2},
-    {t:'They\'d stay quiet and wait to see how you handled it.',s:1},
-    {t:'We have a segment that would pile on rather than defend.',s:0}
+  { engine:3, text:'In past moments of criticism or tension, how have your most loyal members actually responded?', opts:[
+    {t:'They defended us publicly, unprompted, because they meant it.',s:3,r:3},
+    {t:'Members we\'ve built status or perks around stepped in and defended us on cue.',s:2,r:0},
+    {t:'They stayed loyal privately, but didn\'t speak up publicly.',s:1,r:1},
+    {t:'We haven\'t seen this happen, or some piled on instead of defending us.',s:0,r:1}
   ]},
-  { engine:3, text:'How transparent is your organization with your audience about decisions that affect them?', opts:[
-    {t:'Proactively transparent — we communicate the why behind decisions and invite dialogue.',s:3},
-    {t:'Selectively transparent — we share what\'s required but don\'t go further.',s:2},
-    {t:'Mostly opaque — decisions are made and announced without much context or dialogue.',s:1},
-    {t:'Transparency hasn\'t been a deliberate part of how we operate.',s:0}
+  { engine:3, text:'How transparent are you about decisions that affect your audience?', opts:[
+    {t:'Proactively — we explain the why and invite real dialogue.',s:3,r:3},
+    {t:'We share curated updates crafted to manage how a decision is perceived.',s:2,r:0},
+    {t:'We share what\'s required, but rarely go further.',s:1,r:1},
+    {t:'Decisions get announced with little to no context.',s:0,r:1}
   ]},
   // FANDOM ×3
-  { engine:4, text:'Is there a segment of your audience for whom belonging to your community is part of how they\'d describe themselves?', opts:[
-    {t:'Yes — and we actively cultivate that identity relationship.',s:3},
-    {t:'Probably — but we haven\'t built around it or designed experiences to deepen it.',s:2},
-    {t:'Maybe in pockets, but it\'s not a meaningful part of the audience overall.',s:1},
-    {t:'We have not yet created that kind of identity connection, but we recognize it as a gap.',s:0}
+  { engine:4, text:'Is belonging to your community part of how some people describe themselves?', opts:[
+    {t:'Yes — and we nurture that identity, not exploit it.',s:3,r:3},
+    {t:'We\'ve built identity markers and status tiers that encourage people to signal membership publicly.',s:2,r:0},
+    {t:'Maybe in pockets, but we haven\'t built around it.',s:1,r:1},
+    {t:'We recognize this as a gap we haven\'t addressed.',s:0,r:1}
   ]},
-  { engine:4, text:'How does your brand show up in culture outside of paid and owned channels?', opts:[
-    {t:'Organically — in conversations, communities, and cultural moments we didn\'t initiate or pay for.',s:3},
-    {t:'Occasionally — we have cultural presence in our category but it\'s mostly manufactured.',s:2},
-    {t:'Rarely — our presence is almost entirely through channels we control and pay for.',s:1},
-    {t:'Cultural presence is something we aspire to but haven\'t cracked.',s:0}
+  { engine:4, text:'How does your brand actually show up in culture outside paid channels?', opts:[
+    {t:'Organically — in conversations and moments we didn\'t pay for or script.',s:3,r:3},
+    {t:'We work with creators and seed content designed to read as organic.',s:2,r:0},
+    {t:'Rarely — our presence is almost entirely paid and owned.',s:1,r:1},
+    {t:'We have no real cultural presence yet.',s:0,r:1}
   ]},
-  { engine:4, text:'What currently drives the largest share of new audience growth for your organization?', opts:[
-    {t:'Organic referral and word-of-mouth from existing community members.',s:3},
-    {t:'A mix of organic and paid, with community contributing meaningfully.',s:2},
-    {t:'Primarily paid acquisition, campaigns, and outbound efforts.',s:1},
-    {t:'We\'re not sure — we don\'t have clear visibility into what\'s driving growth.',s:0}
+  { engine:4, text:'What currently drives most of your new audience growth?', opts:[
+    {t:'Organic referral and word-of-mouth from real community members.',s:3,r:3},
+    {t:'A referral or affiliate program that rewards people for bringing others in.',s:2,r:0},
+    {t:'Mostly paid acquisition and outbound campaigns.',s:1,r:1},
+    {t:'We don\'t have clear visibility into what\'s driving growth.',s:0,r:1}
   ]}
 ];
 
@@ -949,7 +965,7 @@ function renderQ(){
 
   const optsEl = document.getElementById('q-opts');
   optsEl.innerHTML = q.opts.map((o,i)=>`
-    <div class="q-opt${state.answers[qi]===o.s?' sel':''}" onclick="selectOpt(this,${o.s})">
+    <div class="q-opt${state.answers[qi]&&state.answers[qi].optIdx===i?' sel':''}" onclick="selectOpt(this,${i})">
       <div class="q-radio"></div>
       <div class="q-opt-text">${o.t}</div>
     </div>`).join('');
@@ -958,8 +974,9 @@ function renderQ(){
   document.getElementById('q-next').textContent = qi < 14 ? 'Next →' : 'See My Results →';
 }
 
-function selectOpt(el, score){
-  state.answers[state.currentQ] = score;
+function selectOpt(el, optIdx){
+  const o = QUESTIONS[state.currentQ].opts[optIdx];
+  state.answers[state.currentQ] = { s:o.s, r:o.r, optIdx:optIdx };
   document.querySelectorAll('.q-opt').forEach(o=>o.classList.remove('sel'));
   el.classList.add('sel');
   document.getElementById('q-next').disabled = false;
@@ -1004,20 +1021,44 @@ function submitGate(){
 
 // ── SCORING ───────────────────────────────────────────────────────
 function calcScores(){
-  // Engine scores: 3 questions each × max 3 = max 9
+  // Engine scores: 3 questions each × max 3 = max 9 (capability, from s)
   const eng = ENGINES.map((_,i)=>{
-    const qs = QUESTIONS.filter(q=>q.engine===i);
     const indices = QUESTIONS.reduce((arr,q,idx)=>q.engine===i?[...arr,idx]:arr,[]);
-    const total = indices.reduce((s,idx)=>s+(state.answers[idx]||0),0);
+    const total = indices.reduce((sum,idx)=>sum+(state.answers[idx]?state.answers[idx].s:0),0);
     return { pct: Math.round((total/9)*100), total, indices };
   });
-  const rawTotal = state.answers.reduce((s,a)=>s+(a||0),0);
+  const rawTotal = state.answers.reduce((sum,a)=>sum+(a?a.s:0),0);
   const pq = Math.round((rawTotal/45)*100);
-  return { pq, eng };
+
+  // Resonance Index: same 15 answers, second read (r), identical 0-45 scale
+  const resRawTotal = state.answers.reduce((sum,a)=>sum+(a?a.r:0),0);
+  const resonance = Math.round((resRawTotal/45)*100);
+
+  // Track *why* the score is low, not just that it is: count actively
+  // manufactured selections (r:0) separately from merely underdeveloped ones
+  // (r:1). A low number built from neglect is a different diagnosis than a
+  // low number built from active extraction — the aggregate can't tell them
+  // apart on its own, so we track composition directly.
+  const manufacturedCount = state.answers.reduce((sum,a)=>sum+(a&&a.r===0?1:0),0);
+
+  return { pq, eng, resonance, manufacturedCount };
 }
 
 function ragClass(p){ return p>=70?'green':p>=40?'amber':'red'; }
 function ragLabel(p){ return p>=81?'Compounding':p>=61?'Advanced':p>=41?'Functional':p>=21?'Emerging':'Critical'; }
+
+function resonanceTier(p, manufacturedCount){
+  if(p>=67) return 'High Resonance';
+  if(p>=34) return 'Moderate Resonance';
+  if(manufacturedCount===0) return 'Unformed Resonance';
+  return 'Low Resonance';
+}
+function resonanceTierNote(p, manufacturedCount){
+  if(p>=67) return 'Participation appears genuinely earned.';
+  if(p>=34) return 'A mix of earned and manufactured mechanics.';
+  if(manufacturedCount===0) return 'Not extractive — just not yet meaningfully earned.';
+  return 'Several mechanics appear built to manufacture activity rather than earn it.';
+}
 
 function getBottleneck(engScores){
   let min=Infinity, minIdx=0;
@@ -1025,14 +1066,46 @@ function getBottleneck(engScores){
   return ENGINES[minIdx].id;
 }
 
+function getStrongest(engScores){
+  let max=-Infinity, maxIdx=0;
+  engScores.forEach((e,i)=>{ if(e.pct>max){max=e.pct;maxIdx=i;} });
+  return ENGINES[maxIdx].id;
+}
+
+// Deliberately plain, unpolished tension line — not a finished CTA.
+// This exists to test whether the PQ/Resonance gap itself lands with a real
+// person, before any persuasive copy gets written around it. Revisit after pilot.
+function getTensionLine(pq, resonance, strongestKey, weakestKey, manufacturedCount){
+  const strongName = ENGINES.find(e=>e.id===strongestKey).name;
+  const weakName = ENGINES.find(e=>e.id===weakestKey).name;
+  const resTier = resonanceTier(resonance, manufacturedCount);
+  const pqHigh = pq >= 60;
+
+  if(resTier === 'Low Resonance' && pqHigh){
+    return `Your strongest engine is ${strongName}, and your PQ score is solid. But your Resonance Index shows real manufactured signal — meaning a meaningful share of that participation looks engineered rather than earned. That gap usually shows up later as churn, backlash, or a system that stops compounding on its own.`;
+  }
+  if(resTier === 'Low Resonance' && !pqHigh){
+    return `Both your PQ and your Resonance Index are on the lower end right now. ${weakName} is your weakest engine, and several of the mechanics you do have appear to be manufacturing activity rather than earning it.`;
+  }
+  if(resTier === 'Unformed Resonance'){
+    return `Your Resonance Index is low, but not because anything looks manufactured — it's low because the underlying mechanics in ${weakName} simply haven't been built yet. That's a different, more solvable problem than extraction.`;
+  }
+  if(resTier === 'High Resonance' && pqHigh){
+    return `Strong PQ and a High Resonance Index — your strongest engine is ${strongName}, and what participation you do have appears genuinely earned. The opportunity is usually in ${weakName}, not in fixing what's already trustworthy.`;
+  }
+  return `Your Resonance Index is ${resTier.replace(' Resonance','')}, and your weakest engine is ${weakName}. That combination usually means the trust is there, but the mechanics that would turn it into consistent participation haven't been built yet.`;
+}
+
 // ── BUILD RESULTS ─────────────────────────────────────────────────
 function buildResults(){
-  const {pq, eng} = calcScores();
+  const {pq, eng, resonance, manufacturedCount} = calcScores();
   const archetype = ARCHETYPES.find(a=>pq>=a.min&&pq<=a.max) || ARCHETYPES[ARCHETYPES.length-1];
   const archetypeIdx = ARCHETYPES.indexOf(archetype);
   const bnKey = getBottleneck(eng);
+  const strongKey = getStrongest(eng);
   const bn = BOTTLENECKS[bnKey];
   const scoreColor = pq>=70?'#5db88a':pq>=40?'#e8a84a':'#e07060';
+  const resColor = resonance>=67?'#5db88a':resonance>=34?'#e8a84a':(manufacturedCount===0?'#8a8a9a':'#e07060');
   const {lead,seg} = state;
 
   // Header
@@ -1042,6 +1115,29 @@ function buildResults(){
   document.getElementById('r-pq-stage-label').textContent = pq>=70?'Strong system':pq>=40?'Room to grow':'Needs attention';
   document.getElementById('r-archetype-name').textContent = archetype.name;
   document.getElementById('r-archetype-tag').textContent = archetype.tag;
+
+  // Plain explanatory line — what these two numbers actually mean.
+  // Deliberately factual, not persuasive; the pilot tests the framework, not the copy.
+  const explainEl = document.getElementById('r-explain-line');
+  if(explainEl){
+    explainEl.textContent = 'Your PQ shows how well your system creates participation. Your Resonance Index shows whether that participation appears earned, trusted, and connected to real user value.';
+  }
+
+  // Resonance Index — same 15 answers, second read. Tier label now reflects
+  // whether a low score comes from active manufacturing or from neglect —
+  // those are different diagnoses even at the same number.
+  const resEl = document.getElementById('r-resonance-num');
+  if(resEl){
+    resEl.textContent = resonance;
+    resEl.style.color = resColor;
+    document.getElementById('r-resonance-tier').textContent = resonanceTier(resonance, manufacturedCount);
+    const noteEl = document.getElementById('r-resonance-note');
+    if(noteEl) noteEl.textContent = resonanceTierNote(resonance, manufacturedCount);
+  }
+  const tensionEl = document.getElementById('r-tension-line');
+  if(tensionEl){
+    tensionEl.textContent = getTensionLine(pq, resonance, strongKey, bnKey, manufacturedCount);
+  }
 
   // Engine bars
   document.getElementById('r-engines').innerHTML = eng.map((e,i)=>`
